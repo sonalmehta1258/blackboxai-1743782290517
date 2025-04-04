@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Rail Madad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .sidebar {
+            transition: all 0.3s;
+        }
+        .sidebar-collapsed {
+            width: 5rem;
+        }
+        .sidebar-expanded {
+            width: 16rem;
+        }
+        .main-content {
+            transition: margin-left 0.3s;
+        }
+        .content-shifted {
+            margin-left: 5rem;
+        }
+        .content-full {
+            margin-left: 16rem;
+        }
+        .grid-card {
+            transition: all 0.3s ease;
+        }
+        .grid-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar sidebar-expanded fixed h-full bg-gray-800 text-white">
+        <div class="p-4 flex items-center justify-between border-b border-gray-700">
+            <div class="flex items-center">
+                <i class="fas fa-train text-blue-400 text-2xl mr-3"></i>
+                <span id="logoText" class="text-xl font-bold">Rail Madad</span>
+            </div>
+            <button id="toggleSidebar" class="text-gray-400 hover:text-white">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+        <nav class="p-4">
+            <div class="mb-8">
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">MAIN</h3>
+                <ul>
+                    <li class="mb-2">
+                        <a href="#" class="flex items-center p-2 text-white bg-gray-700 rounded-lg">
+                            <i class="fas fa-tachometer-alt mr-3"></i>
+                            <span id="dashboardText" class="font-medium">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="flex items-center p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg">
+                            <i class="fas fa-comments mr-3"></i>
+                            <span id="complaintsText" class="font-medium">Complaints</span>
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="flex items-center p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg">
+                            <i class="fas fa-user-md mr-3"></i>
+                            <span id="medicalText" class="font-medium">Medical Cases</span>
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="flex items-center p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg">
+                            <i class="fas fa-bell mr-3"></i>
+                            <span id="emergenciesText" class="font-medium">Emergencies</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="mb-8">
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">ANALYTICS</h3>
+                <ul>
+                    <li class="mb-2">
+                        <a href="#" class="flex items-center p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg">
+                            <i class="fas fa-chart-line mr-3"></i>
+                            <span id="reportsText" class="font-medium">Reports</span>
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a href="#" class="flex items-center p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg">
+                            <i class="fas fa-map-marked-alt mr-3"></i>
+                            <span id="heatmapText" class="font-medium">Heatmap</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">SETTINGS</h3>
+                <ul>
+                    <li class="mb-2">
+                        <a href="#" class="flex items-center p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg">
+                            <i class="fas fa-cog mr-3"></i>
+                            <span id="settingsText" class="font-medium">Settings</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center p-2 text-gray-400 hover:text-white hover:bg-gray-700 rounded-lg">
+                            <i class="fas fa-sign-out-alt mr-3"></i>
+                            <span id="logoutText" class="font-medium">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="main-content content-full min-h-screen">
+        <!-- Top Navigation -->
+        <header class="bg-white shadow-sm">
+            <div class="max-w-full mx-auto px-4 py-4 sm:px-6 lg:px-8 flex justify-between items-center">
+                <h1 class="text-lg font-semibold text-gray-900">Admin Dashboard</h1>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <button id="notificationsBtn" class="p-1 text-gray-400 hover:text-gray-500 relative">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
+                        </button>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="h-8 w-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium">
+                            AD
+                        </div>
+                        <span class="ml-2 text-sm font-medium text-gray-700">Admin User</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="max-w-full mx-auto px-4 py-6 sm:px-6 lg:px-8">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="grid-card bg-white p-6 rounded-lg shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Total Complaints</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">1,248</p>
+                            <p class="text-xs text-green-600 mt-1">
+                                <i class="fas fa-arrow-up mr-1"></i> 12% from last week
+                            </p>
+                        </div>
+                        <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                            <i class="fas fa-comment-dots text-blue-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-card bg-white p-6 rounded-lg shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Pending Resolution</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">327</p>
+                            <p class="text-xs text-red-600 mt-1">
+                                <i class="fas fa-arrow-down mr-1"></i> 5% from last week
+                            </p>
+                        </div>
+                        <div class="h-12 w-12 rounded-full bg-yellow-100 flex items-center justify-center">
+                            <i class="fas fa-clock text-yellow-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-card bg-white p-6 rounded-lg shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Medical Cases</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">89</p>
+                            <p class="text-xs text-green-600 mt-1">
+                                <i class="fas fa-arrow-up mr-1"></i> 3% from last week
+                            </p>
+                        </div>
+                        <div class="h-12 w-12 rounded-full bg-green-100 flex items-center justify-center">
+                            <i class="fas fa-user-md text-green-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid-card bg-white p-6 rounded-lg shadow">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">Emergency Alerts</p>
+                            <p class="text-2xl font-bold text-gray-900 mt-1">24</p>
+                            <p class="text-xs text-red-600 mt-1">
+                                <i class="fas fa-arrow-up mr-1"></i> 20% from last week
+                            </p>
+                        </div>
+                        <div class="h-12 w-12 rounded-full bg-red-100 flex items-center justify-center">
+                            <i class="fas fa-exclamation-triangle text-red-600 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Complaint Types Chart -->
+                <div class="grid-card bg-white p-6 rounded-lg shadow lg:col-span-2">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Complaints by Type</h2>
+                        <select class="text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option>Last 7 days</option>
+                            <option>Last 30 days</option>
+                            <option>Last 90 days</option>
+                        </select>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="complaintTypesChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Resolution Time Chart -->
+                <div class="grid-card bg-white p-6 rounded-lg shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Resolution Time</h2>
+                        <select class="text-sm border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <option>Last 7 days</option>
+                            <option>Last 30 days</option>
+                            <option>Last 90 days</option>
+                        </select>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="resolutionTimeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity and Top Stations -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Recent Complaints -->
+                <div class="grid-card bg-white p-6 rounded-lg shadow lg:col-span-2">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Recent Complaints</h2>
+                        <a href="#" class="text-sm text-blue-600 hover:text-blue-800">View All</a>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Train</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#RM-4821</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Cleanliness</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Rajdhani Exp (12951)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <a href="#" class="text-blue-600 hover:text-blue-900">View</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#RM-4819</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Delay</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Shatabdi Exp (12002)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Resolved</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <a href="#" class="text-blue-600 hover:text-blue-900">View</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#RM-4815</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Catering</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Duronto Exp (12266)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">In Progress</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <a href="#" class="text-blue-600 hover:text-blue-900">View</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#RM-4812</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Staff Behavior</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Garib Rath (12266)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Escalated</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <a href="#" class="text-blue-600 hover:text-blue-900">View</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#RM-4809</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">AC Issues</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Shatabdi Exp (12030)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Resolved</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <a href="#" class="text-blue-600 hover:text-blue-900">View</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Top Stations -->
+                <div class="grid-card bg-white p-6 rounded-lg shadow">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-semibold text-gray-900">Top Stations by Complaints</h2>
+                        <a href="#" class="text-sm text-blue-600 hover:text-blue-800">View All</a>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                                <span class="text-blue-600 font-medium">1</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">New Delhi (NDLS)</h4>
+                                <p class="text-sm text-gray-500">42 complaints this month</p>
+                                <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                                    <div class="bg-blue-600 h-1.5 rounded-full" style="width: 80%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                                <span class="text-blue-600 font-medium">2</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Mumbai Central (BCT)</h4>
+                                <p class="text-sm text-gray-500">35 complaints this month</p>
+                                <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                                    <div class="bg-blue-600 h-1.5 rounded-full" style="width: 65%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                                <span class="text-blue-600 font-medium">3</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Chennai Central (MAS)</h4>
+                                <p class="text-sm text-gray-500">28 complaints this month</p>
+                                <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                                    <div class="bg-blue-600 h-1.5 rounded-full" style="width: 55%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                                <span class="text-blue-600 font-medium">4</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Howrah (HWH)</h4>
+                                <p class="text-sm text-gray-500">22 complaints this month</p>
+                                <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                                    <div class="bg-blue-600 h-1.5 rounded-full" style="width: 45%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                                <span class="text-blue-600 font-medium">5</span>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-gray-900">Bangalore City (SBC)</h4>
+                                <p class="text-sm text-gray-500">18 complaints this month</p>
+                                <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2">
+                                    <div class="bg-blue-600 h-1.5 rounded-full" style="width: 35%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Sidebar toggle functionality
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        let sidebarCollapsed = false;
+
+        toggleSidebar.addEventListener('click', function() {
+            sidebarCollapsed = !sidebarCollapsed;
+            if (sidebarCollapsed) {
+                sidebar.classList.remove('sidebar-expanded');
+                sidebar.classList.add('sidebar-collapsed');
+                mainContent.classList.remove('content-full');
+                mainContent.classList.add('content-shifted');
+                // Hide text elements
+                document.querySelectorAll('[id$="Text"]').forEach(el => {
+                    el.classList.add('hidden');
+                });
+            } else {
+                sidebar.classList.remove('sidebar-collapsed');
+                sidebar.classList.add('sidebar-expanded');
+                mainContent.classList.remove('content-shifted');
+                mainContent.classList.add('content-full');
+                // Show text elements
+                document.querySelectorAll('[id$="Text"]').forEach(el => {
+                    el.classList.remove('hidden');
+                });
+            }
+        });
+
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Complaint Types Chart
+            const complaintTypesCtx = document.getElementById('complaintTypesChart').getContext('2d');
+            const complaintTypesChart = new Chart(complaintTypesCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Cleanliness', 'Delay', 'Catering', 'Staff Behavior', 'AC Issues', 'Others'],
+                    datasets: [{
+                        label: 'Number of Complaints',
+                        data: [45, 38, 22, 15, 12, 8],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(16, 185, 129, 0.7)',
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(139, 92, 246, 0.7)',
+                            'rgba(220, 38, 38, 0.7)',
+                            'rgba(75, 85, 99, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(139, 92, 246, 1)',
+                            'rgba(220, 38, 38, 1)',
+                            'rgba(75, 85, 99, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Resolution Time Chart
+            const resolutionTimeCtx = document.getElementById('resolutionTimeChart').getContext('2d');
+            const resolutionTimeChart = new Chart(resolutionTimeCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['< 1 hour', '1-6 hours', '6-24 hours', '1-3 days', '> 3 days'],
+                    datasets: [{
+                        data: [15, 35, 30, 15, 5],
+                        backgroundColor: [
+                            'rgba(16, 185, 129, 0.7)',
+                            'rgba(59, 130, 246, 0.7)',
+                            'rgba(245, 158, 11, 0.7)',
+                            'rgba(139, 92, 246, 0.7)',
+                            'rgba(220, 38, 38, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(139, 92, 246, 1)',
+                            'rgba(220, 38, 38, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

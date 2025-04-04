@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Assistant | Rail Madad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chat-container {
+            height: 400px;
+            scrollbar-width: thin;
+            scrollbar-color: #3b82f6 #e5e7eb;
+        }
+        .chat-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-container::-webkit-scrollbar-track {
+            background: #e5e7eb;
+        }
+        .chat-container::-webkit-scrollbar-thumb {
+            background-color: #3b82f6;
+            border-radius: 3px;
+        }
+        .user-message {
+            background-color: #3b82f6;
+            color: white;
+            border-radius: 18px 18px 4px 18px;
+        }
+        .bot-message {
+            background-color: #e5e7eb;
+            color: #111827;
+            border-radius: 18px 18px 18px 4px;
+        }
+        .typing-indicator span {
+            animation: bounce 1.5s infinite ease-in-out;
+        }
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        .language-option:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-train text-blue-600 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-gray-900">Rail Madad</span>
+                    </div>
+                </div>
+                <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
+                    <a href="index.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</a>
+                    <a href="complaint.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Register Complaint</a>
+                    <a href="doctor.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Medical Help</a>
+                    <a href="sos.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Emergency</a>
+                </div>
+                <div class="flex items-center">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                        Staff Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <!-- Chat Header -->
+            <div class="bg-blue-600 px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="h-10 w-10 rounded-full bg-blue-700 flex items-center justify-center mr-4">
+                        <i class="fas fa-robot text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-medium text-white">Rail Madad Assistant</h2>
+                        <p id="botStatus" class="text-xs text-blue-100">Online</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button id="languageBtn" class="h-8 px-3 bg-blue-700 hover:bg-blue-800 text-white rounded-full text-xs font-medium flex items-center">
+                        <i class="fas fa-language mr-1"></i> English
+                    </button>
+                    <button id="voiceBtn" class="h-8 w-8 rounded-full bg-blue-700 hover:bg-blue-800 text-white flex items-center justify-center">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Language Selector (Hidden by default) -->
+            <div id="languageSelector" class="hidden bg-blue-50 px-6 py-3 border-b border-blue-100">
+                <h3 class="text-xs font-medium text-blue-800 mb-2">SELECT LANGUAGE</h3>
+                <div class="grid grid-cols-3 gap-2">
+                    <button data-lang="en" class="language-option py-2 px-3 bg-white border border-blue-200 rounded-md text-sm font-medium text-blue-800 hover:bg-blue-100 transition">
+                        English
+                    </button>
+                    <button data-lang="hi" class="language-option py-2 px-3 bg-white border border-blue-200 rounded-md text-sm font-medium text-blue-800 hover:bg-blue-100 transition">
+                        हिंदी
+                    </button>
+                    <button data-lang="bn" class="language-option py-2 px-3 bg-white border border-blue-200 rounded-md text-sm font-medium text-blue-800 hover:bg-blue-100 transition">
+                        বাংলা
+                    </button>
+                    <button data-lang="ta" class="language-option py-2 px-3 bg-white border border-blue-200 rounded-md text-sm font-medium text-blue-800 hover:bg-blue-100 transition">
+                        தமிழ்
+                    </button>
+                    <button data-lang="te" class="language-option py-2 px-3 bg-white border border-blue-200 rounded-md text-sm font-medium text-blue-800 hover:bg-blue-100 transition">
+                        తెలుగు
+                    </button>
+                    <button data-lang="mr" class="language-option py-2 px-3 bg-white border border-blue-200 rounded-md text-sm font-medium text-blue-800 hover:bg-blue-100 transition">
+                        मराठी
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat Messages -->
+            <div id="chatContainer" class="chat-container p-4 overflow-y-auto">
+                <!-- Welcome message -->
+                <div class="flex mb-4">
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                        <i class="fas fa-robot text-gray-600"></i>
+                    </div>
+                    <div class="bot-message px-4 py-2 max-w-xs sm:max-w-md">
+                        <p>Hello! I'm your Rail Madad assistant. How can I help you today?</p>
+                        <div class="mt-2 flex flex-wrap gap-2">
+                            <button class="quick-reply-btn text-xs bg-blue-100 hover:bg-blue-200 text-blue-800 px-2 py-1 rounded-full">
+                                Train status
+                            </button>
+                            <button class="quick-reply-btn text-xs bg-blue-100 hover:bg-blue-200 text-blue-800 px-2 py-1 rounded-full">
+                                File complaint
+                            </button>
+                            <button class="quick-reply-btn text-xs bg-blue-100 hover:bg-blue-200 text-blue-800 px-2 py-1 rounded-full">
+                                Medical help
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Input -->
+            <div class="border-t border-gray-200 p-4">
+                <div class="flex items-center">
+                    <input id="messageInput" type="text" placeholder="Type your message..." class="flex-1 px-4 py-2 border border-gray-300 rounded-l-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <button id="sendBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r-full">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="mt-2 flex items-center justify-between">
+                    <div class="flex items-center space-x-2">
+                        <button class="h-8 w-8 rounded-full text-gray-500 hover:bg-gray-100 flex items-center justify-center">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                        <button class="h-8 w-8 rounded-full text-gray-500 hover:bg-gray-100 flex items-center justify-center">
+                            <i class="fas fa-image"></i>
+                        </button>
+                    </div>
+                    <div class="text-xs text-gray-500">
+                        <span id="charCount">0/200</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/chat.js"></script>
+    <script>
+        // DOM Elements
+        const chatContainer = document.getElementById('chatContainer');
+        const messageInput = document.getElementById('messageInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const languageBtn = document.getElementById('languageBtn');
+        const languageSelector = document.getElementById('languageSelector');
+        const voiceBtn = document.getElementById('voiceBtn');
+        const charCount = document.getElementById('charCount');
+        
+        // Sample responses for demo
+        const sampleResponses = {
+            "train status": "Which train are you inquiring about? Please provide the train number or name.",
+            "file complaint": "I can help you file a complaint. Would you like to do it via text or voice?",
+            "medical help": "For medical assistance, I can connect you with a doctor. Is this an emergency?",
+            "hello": "Hello! How can I assist you with your railway journey today?",
+            "help": "I can help with: train information, complaints, medical assistance, and emergencies. What do you need?",
+            "thank you": "You're welcome! Is there anything else I can help you with?"
+        };
+
+        // Language selection
+        let currentLanguage = 'en';
+        languageBtn.addEventListener('click', function() {
+            languageSelector.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('.language-option').forEach(btn => {
+            btn.addEventListener('click', function() {
+                currentLanguage = this.dataset.lang;
+                languageBtn.innerHTML = `<i class="fas fa-language mr-1"></i> ${this.textContent}`;
+                languageSelector.classList.add('hidden');
+                addBotMessage(`Language changed to ${this.textContent}. How can I help you?`);
+            });
+        });
+
+        // Voice input
+        voiceBtn.addEventListener('click', function() {
+            if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+                const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.lang = currentLanguage === 'en' ? 'en-IN' : 
+                                 currentLanguage === 'hi' ? 'hi-IN' : 
+                                 currentLanguage === 'bn' ? 'bn-IN' : 'en-IN';
+                
+                recognition.onstart = function() {
+                    voiceBtn.innerHTML = '<i class="fas fa-microphone-slash"></i>';
+                    voiceBtn.classList.add('bg-red-500', 'hover:bg-red-600');
+                    voiceBtn.classList.remove('bg-blue-700', 'hover:bg-blue-800');
+                    addBotMessage("Listening... Please speak now.");
+                };
+
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    messageInput.value = transcript;
+                    voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                    voiceBtn.classList.remove('bg-red-500', 'hover:bg-red-600');
+                    voiceBtn.classList.add('bg-blue-700', 'hover:bg-blue-800');
+                };
+
+                recognition.onerror = function(event) {
+                    console.error('Speech recognition error', event.error);
+                    voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                    voiceBtn.classList.remove('bg-red-500', 'hover:bg-red-600');
+                    voiceBtn.classList.add('bg-blue-700', 'hover:bg-blue-800');
+                    addBotMessage("Sorry, I couldn't hear you. Please try typing instead.");
+                };
+
+                recognition.start();
+            } else {
+                alert("Speech recognition is not supported in your browser.");
+            }
+        });
+
+        // Character counter
+        messageInput.addEventListener('input', function() {
+            const count = this.value.length;
+            charCount.textContent = `${count}/200`;
+        });
+
+        // Send message
+        function sendMessage() {
+            const message = messageInput.value.trim();
+            if (message === '') return;
+
+            addUserMessage(message);
+            messageInput.value = '';
+            charCount.textContent = '0/200';
+
+            // Show typing indicator
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'flex mb-4';
+            typingDiv.innerHTML = `
+                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                    <i class="fas fa-robot text-gray-600"></i>
+                </div>
+                <div class="bot-message px-4 py-2 max-w-xs sm:max-w-md">
+                    <div class="typing-indicator flex space-x-1">
+                        <span class="h-2 w-2 bg-gray-400 rounded-full"></span>
+                        <span class="h-2 w-2 bg-gray-400 rounded-full"></span>
+                        <span class="h-2 w-2 bg-gray-400 rounded-full"></span>
+                    </div>
+                </div>
+            `;
+            chatContainer.appendChild(typingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Simulate bot response after delay
+            setTimeout(() => {
+                chatContainer.removeChild(typingDiv);
+                const response = getBotResponse(message);
+                addBotMessage(response);
+            }, 1000 + Math.random() * 2000);
+        }
+
+        // Quick reply buttons
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('quick-reply-btn')) {
+                const message = e.target.textContent.trim();
+                messageInput.value = message;
+                sendMessage();
+            }
+        });
+
+        // Add user message to chat
+        function addUserMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex justify-end mb-4';
+            messageDiv.innerHTML = `
+                <div class="user-message px-4 py-2 max-w-xs sm:max-w-md">
+                    <p>${message}</p>
+                </div>
+            `;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Add bot message to chat
+        function addBotMessage(message) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'flex mb-4';
+            messageDiv.innerHTML = `
+                <div class="flex-shrink-0 h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                    <i class="fas fa-robot text-gray-600"></i>
+                </div>
+                <div class="bot-message px-4 py-2 max-w-xs sm:max-md">
+                    <p>${message}</p>
+                </div>
+            `;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Get bot response (simplified for demo)
+        function getBotResponse(message) {
+            const lowerMsg = message.toLowerCase();
+            for (const key in sampleResponses) {
+                if (lowerMsg.includes(key)) {
+                    return sampleResponses[key];
+                }
+            }
+            return "I'm not sure I understand. Could you please rephrase your question?";
+        }
+
+        // Event listeners
+        sendBtn.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>

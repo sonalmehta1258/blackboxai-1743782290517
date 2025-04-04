@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Complaint | Rail Madad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .form-step {
+            display: none;
+        }
+        .form-step.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .progress-bar {
+            height: 6px;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-train text-blue-600 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-gray-900">Rail Madad</span>
+                    </div>
+                </div>
+                <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
+                    <a href="index.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</a>
+                    <a href="#" class="text-blue-600 px-3 py-2 text-sm font-medium">Register Complaint</a>
+                    <a href="doctor.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Medical Help</a>
+                    <a href="sos.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Emergency</a>
+                </div>
+                <div class="flex items-center">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                        Staff Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Complaint Form -->
+    <div class="max-w-3xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <!-- Progress Bar -->
+            <div class="bg-gray-200 h-2">
+                <div id="progressBar" class="progress-bar bg-blue-600" style="width: 25%"></div>
+            </div>
+
+            <!-- Form Steps -->
+            <div class="p-6 sm:p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Register Your Complaint</h2>
+                
+                <!-- Step 1: Complaint Type -->
+                <div id="step1" class="form-step active">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">1. What type of issue are you facing?</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                        <button class="complaint-type-btn flex items-center p-4 border rounded-lg hover:border-blue-500 hover:bg-blue-50 transition">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                                <i class="fas fa-clock text-blue-600"></i>
+                            </div>
+                            <div class="text-left">
+                                <h4 class="font-medium text-gray-900">Train Delay</h4>
+                                <p class="text-sm text-gray-500">Running behind schedule</p>
+                            </div>
+                        </button>
+                        <button class="complaint-type-btn flex items-center p-4 border rounded-lg hover:border-blue-500 hover:bg-blue-50 transition">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-red-100 flex items-center justify-center mr-4">
+                                <i class="fas fa-times-circle text-red-600"></i>
+                            </div>
+                            <div class="text-left">
+                                <h4 class="font-medium text-gray-900">Cancellation</h4>
+                                <p class="text-sm text-gray-500">Train service cancelled</p>
+                            </div>
+                        </button>
+                        <button class="complaint-type-btn flex items-center p-4 border rounded-lg hover:border-blue-500 hover:bg-blue-50 transition">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-yellow-100 flex items-center justify-center mr-4">
+                                <i class="fas fa-utensils text-yellow-600"></i>
+                            </div>
+                            <div class="text-left">
+                                <h4 class="font-medium text-gray-900">Catering</h4>
+                                <p class="text-sm text-gray-500">Food quality or service</p>
+                            </div>
+                        </button>
+                        <button class="complaint-type-btn flex items-center p-4 border rounded-lg hover:border-blue-500 hover:bg-blue-50 transition">
+                            <div class="flex-shrink-0 h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center mr-4">
+                                <i class="fas fa-procedures text-purple-600"></i>
+                            </div>
+                            <div class="text-left">
+                                <h4 class="font-medium text-gray-900">Cleanliness</h4>
+                                <p class="text-sm text-gray-500">Hygiene issues</p>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="flex justify-end">
+                        <button onclick="nextStep(1, 2)" class="next-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md text-sm font-medium">
+                            Next <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Complaint Details -->
+                <div id="step2" class="form-step">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">2. Tell us more about your issue</h3>
+                    
+                    <div class="mb-4">
+                        <label for="complaintTitle" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                        <input type="text" id="complaintTitle" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Brief description of your complaint">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="complaintDescription" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <div class="flex space-x-2 mb-2">
+                            <button id="voiceInputBtn" class="flex items-center justify-center h-10 w-10 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition">
+                                <i class="fas fa-microphone"></i>
+                            </button>
+                            <span class="text-xs text-gray-500 flex items-center">Click to record voice complaint</span>
+                        </div>
+                        <textarea id="complaintDescription" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Please describe your complaint in detail..."></textarea>
+                        <div class="flex justify-between mt-1">
+                            <span class="text-xs text-gray-500">Minimum 30 characters</span>
+                            <span id="charCount" class="text-xs text-gray-500">0/500</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button class="priority-btn py-2 px-4 border rounded-md text-sm font-medium hover:bg-gray-50" data-priority="low">
+                                Low
+                            </button>
+                            <button class="priority-btn py-2 px-4 border rounded-md text-sm font-medium hover:bg-gray-50" data-priority="medium">
+                                Medium
+                            </button>
+                            <button class="priority-btn py-2 px-4 border rounded-md text-sm font-medium hover:bg-gray-50" data-priority="high">
+                                High
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <button onclick="prevStep(2, 1)" class="prev-btn bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-arrow-left mr-2"></i> Back
+                        </button>
+                        <button onclick="nextStep(2, 3)" class="next-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md text-sm font-medium">
+                            Next <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Additional Information -->
+                <div id="step3" class="form-step">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">3. Additional Information</h3>
+                    
+                    <div class="mb-4">
+                        <label for="trainNumber" class="block text-sm font-medium text-gray-700 mb-1">Train Number/Name</label>
+                        <input type="text" id="trainNumber" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="e.g. 12345 or Rajdhani Express">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="journeyDate" class="block text-sm font-medium text-gray-700 mb-1">Journey Date</label>
+                        <input type="date" id="journeyDate" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="pnrNumber" class="block text-sm font-medium text-gray-700 mb-1">PNR Number (Optional)</label>
+                        <input type="text" id="pnrNumber" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="10-digit PNR number">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Upload Evidence (Optional)</label>
+                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
+                            <div class="space-y-1 text-center">
+                                <div class="flex text-sm text-gray-600">
+                                    <label for="fileUpload" class="relative cursor-pointer bg-white rounded-md font-medium text-blue-600 hover:text-blue-500 focus-within:outline-none">
+                                        <span>Upload files</span>
+                                        <input id="fileUpload" type="file" class="sr-only" multiple>
+                                    </label>
+                                    <p class="pl-1">or drag and drop</p>
+                                </div>
+                                <p class="text-xs text-gray-500">
+                                    PNG, JPG, PDF up to 5MB
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <button onclick="prevStep(3, 2)" class="prev-btn bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-arrow-left mr-2"></i> Back
+                        </button>
+                        <button onclick="nextStep(3, 4)" class="next-btn bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md text-sm font-medium">
+                            Next <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Review & Submit -->
+                <div id="step4" class="form-step">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">4. Review Your Complaint</h3>
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Complaint Type</h4>
+                                <p id="reviewType" class="text-gray-900">-</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Priority</h4>
+                                <p id="reviewPriority" class="text-gray-900">-</p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-500">Title</h4>
+                            <p id="reviewTitle" class="text-gray-900">-</p>
+                        </div>
+                        <div class="mb-4">
+                            <h4 class="text-sm font-medium text-gray-500">Description</h4>
+                            <p id="reviewDescription" class="text-gray-900">-</p>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Train Details</h4>
+                                <p id="reviewTrain" class="text-gray-900">-</p>
+                            </div>
+                            <div>
+                                <h4 class="text-sm font-medium text-gray-500">Journey Date</h4>
+                                <p id="reviewDate" class="text-gray-900">-</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex items-start">
+                            <div class="flex items-center h-5">
+                                <input id="consentCheckbox" type="checkbox" class="focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300 rounded">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="consentCheckbox" class="font-medium text-gray-700">I agree to share my details with railway authorities for complaint resolution</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-between">
+                        <button onclick="prevStep(4, 3)" class="prev-btn bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-md text-sm font-medium">
+                            <i class="fas fa-arrow-left mr-2"></i> Back
+                        </button>
+                        <button id="submitBtn" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md text-sm font-medium disabled:opacity-50" disabled>
+                            <i class="fas fa-paper-plane mr-2"></i> Submit Complaint
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Confirmation -->
+                <div id="step5" class="form-step text-center py-8">
+                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100 mb-4">
+                        <i class="fas fa-check text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">Complaint Submitted Successfully!</h3>
+                    <p class="text-gray-500 mb-6">
+                        Your complaint reference number is: <span id="complaintRef" class="font-bold text-gray-900">RM2023-XXXXXX</span>
+                    </p>
+                    <div class="bg-blue-50 p-4 rounded-lg mb-6 text-left">
+                        <h4 class="text-sm font-medium text-blue-800 mb-2">Next Steps:</h4>
+                        <ul class="list-disc list-inside text-sm text-blue-700 space-y-1">
+                            <li>You'll receive an SMS with your complaint details</li>
+                            <li>Our team will review your complaint within 24 hours</li>
+                            <li>Track status in your dashboard or via our chatbot</li>
+                        </ul>
+                    </div>
+                    <div class="flex justify-center space-x-4">
+                        <a href="index.html" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
+                            <i class="fas fa-home mr-2"></i> Return Home
+                        </a>
+                        <a href="#" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+                            <i class="fas fa-download mr-2"></i> Download PDF
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/main.js"></script>
+    <script>
+        // Form navigation logic
+        function nextStep(current, next) {
+            document.getElementById(`step${current}`).classList.remove('active');
+            document.getElementById(`step${next}`).classList.add('active');
+            document.getElementById('progressBar').style.width = `${(next-1)*25}%`;
+            
+            // Update review section if going to step 4
+            if(next === 4) {
+                updateReviewSection();
+            }
+        }
+
+        function prevStep(current, prev) {
+            document.getElementById(`step${current}`).classList.remove('active');
+            document.getElementById(`step${prev}`).classList.add('active');
+            document.getElementById('progressBar').style.width = `${(prev-1)*25}%`;
+        }
+
+        // Update review section with entered data
+        function updateReviewSection() {
+            // This would be populated with actual form data in a real implementation
+            document.getElementById('reviewType').textContent = 'Train Delay';
+            document.getElementById('reviewPriority').textContent = 'Medium';
+            document.getElementById('reviewTitle').textContent = document.getElementById('complaintTitle').value || '-';
+            document.getElementById('reviewDescription').textContent = document.getElementById('complaintDescription').value || '-';
+            document.getElementById('reviewTrain').textContent = document.getElementById('trainNumber').value || '-';
+            document.getElementById('reviewDate').textContent = document.getElementById('journeyDate').value || '-';
+        }
+
+        // Character counter for description
+        document.getElementById('complaintDescription').addEventListener('input', function() {
+            const count = this.value.length;
+            document.getElementById('charCount').textContent = `${count}/500`;
+        });
+
+        // Consent checkbox validation
+        document.getElementById('consentCheckbox').addEventListener('change', function() {
+            document.getElementById('submitBtn').disabled = !this.checked;
+        });
+
+        // Complaint type selection
+        document.querySelectorAll('.complaint-type-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.complaint-type-btn').forEach(b => {
+                    b.classList.remove('border-blue-500', 'bg-blue-50', 'border-2');
+                });
+                this.classList.add('border-blue-500', 'bg-blue-50', 'border-2');
+            });
+        });
+
+        // Priority selection
+        document.querySelectorAll('.priority-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.priority-btn').forEach(b => {
+                    b.classList.remove('border-blue-500', 'bg-blue-50', 'border-2');
+                });
+                this.classList.add('border-blue-500', 'bg-blue-50', 'border-2');
+            });
+        });
+
+        // Voice input button
+        document.getElementById('voiceInputBtn').addEventListener('click', function() {
+            alert('Voice input would be implemented here in a production environment');
+        });
+    </script>
+</body>
+</html>

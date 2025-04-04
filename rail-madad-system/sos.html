@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emergency SOS | Rail Madad</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .sos-btn {
+            box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 20px rgba(220, 38, 38, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+            }
+        }
+        .map-container {
+            height: 300px;
+            background-color: #e5e7eb;
+        }
+        .emergency-card {
+            transition: all 0.3s ease;
+        }
+        .emergency-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-train text-blue-600 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-gray-900">Rail Madad</span>
+                    </div>
+                </div>
+                <div class="hidden md:ml-6 md:flex md:items-center md:space-x-8">
+                    <a href="index.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Home</a>
+                    <a href="complaint.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Register Complaint</a>
+                    <a href="doctor.html" class="text-gray-500 hover:text-blue-600 px-3 py-2 text-sm font-medium">Medical Help</a>
+                    <a href="#" class="text-blue-600 px-3 py-2 text-sm font-medium">Emergency</a>
+                </div>
+                <div class="flex items-center">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+                        Staff Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">Emergency SOS</h1>
+            <p class="text-gray-600">Get immediate help from railway security and emergency services</p>
+        </div>
+
+        <!-- SOS Button -->
+        <div class="text-center mb-10">
+            <button id="sosButton" class="sos-btn h-32 w-32 rounded-full bg-red-600 text-white text-xl font-bold mx-auto flex items-center justify-center">
+                <i class="fas fa-bell mr-2"></i> SOS
+            </button>
+            <p id="sosStatus" class="mt-4 text-gray-600">Press the button in case of emergency</p>
+        </div>
+
+        <!-- Emergency Contacts -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div class="emergency-card bg-white p-4 rounded-lg shadow-sm border border-gray-200 cursor-pointer">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-red-100 flex items-center justify-center mr-4">
+                        <i class="fas fa-shield-alt text-red-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-900">Railway Protection Force</h3>
+                        <p class="text-sm text-gray-500">182 (Toll Free)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="emergency-card bg-white p-4 rounded-lg shadow-sm border border-gray-200 cursor-pointer">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center mr-4">
+                        <i class="fas fa-ambulance text-blue-600"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-medium text-gray-900">Medical Emergency</h3>
+                        <p class="text-sm text-gray-500">139 (Toll Free)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Location Tracking -->
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-8">
+            <h3 class="font-medium text-gray-900 mb-4 flex items-center">
+                <i class="fas fa-map-marker-alt text-red-500 mr-2"></i> Your Location
+            </h3>
+            <div class="map-container rounded-lg mb-4 flex items-center justify-center">
+                <div class="text-center">
+                    <i class="fas fa-map-marked-alt text-4xl text-gray-400 mb-2"></i>
+                    <p class="text-gray-500">Location tracking will activate during emergency</p>
+                </div>
+            </div>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input id="locationConsent" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                    <label for="locationConsent" class="ml-2 block text-sm text-gray-700">
+                        Share my location during emergency
+                    </label>
+                </div>
+                <button id="testLocationBtn" class="text-sm text-blue-600 hover:text-blue-800">
+                    <i class="fas fa-satellite-dish mr-1"></i> Test Location
+                </button>
+            </div>
+        </div>
+
+        <!-- Emergency Details -->
+        <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+            <h3 class="font-medium text-gray-900 mb-4">Emergency Details</h3>
+            <div class="mb-4">
+                <label for="emergencyType" class="block text-sm font-medium text-gray-700 mb-1">Type of Emergency</label>
+                <select id="emergencyType" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    <option value="">Select emergency type</option>
+                    <option value="medical">Medical Emergency</option>
+                    <option value="security">Security Threat</option>
+                    <option value="accident">Accident</option>
+                    <option value="harassment">Harassment</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="mb-4">
+                <label for="coachNumber" class="block text-sm font-medium text-gray-700 mb-1">Coach Number (if known)</label>
+                <input type="text" id="coachNumber" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="e.g. B3 or A1">
+            </div>
+            <div class="mb-4">
+                <label for="emergencyDesc" class="block text-sm font-medium text-gray-700 mb-1">Brief Description</label>
+                <textarea id="emergencyDesc" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" placeholder="Describe the emergency situation..."></textarea>
+            </div>
+            <div class="flex items-center">
+                <input id="recordAudio" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                <label for="recordAudio" class="ml-2 block text-sm text-gray-700">
+                    Record audio message (30 seconds)
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/main.js"></script>
+    <script>
+        // SOS Button Functionality
+        const sosButton = document.getElementById('sosButton');
+        const sosStatus = document.getElementById('sosStatus');
+        let emergencyActive = false;
+
+        sosButton.addEventListener('click', function() {
+            if(emergencyActive) return;
+            
+            emergencyActive = true;
+            sosButton.classList.remove('sos-btn');
+            sosButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Connecting...';
+            sosButton.classList.add('bg-red-700');
+            sosStatus.textContent = 'Connecting to railway security...';
+            sosStatus.className = 'mt-4 text-red-600 font-medium';
+
+            // Simulate connection process
+            setTimeout(() => {
+                sosButton.innerHTML = '<i class="fas fa-headset mr-2"></i> Connected';
+                sosStatus.textContent = 'You are now connected to railway security. Stay on the line.';
+                
+                // Show emergency details
+                document.getElementById('emergencyType').setAttribute('required', '');
+                document.getElementById('coachNumber').setAttribute('required', '');
+                document.getElementById('emergencyDesc').setAttribute('required', '');
+
+                // If location consent is checked, get location
+                if(document.getElementById('locationConsent').checked) {
+                    getLocation();
+                }
+            }, 2000);
+        });
+
+        // Location functions
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    showPosition, 
+                    handleLocationError,
+                    {enableHighAccuracy: true, timeout: 5000}
+                );
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        function showPosition(position) {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            console.log(`Latitude: ${lat}, Longitude: ${lng}`);
+            // In a real app, we would send this to the server
+            document.querySelector('.map-container').innerHTML = `
+                <div class="h-full flex items-center justify-center">
+                    <div class="text-center">
+                        <i class="fas fa-map-marker-alt text-4xl text-red-500 mb-2"></i>
+                        <p class="text-gray-700">Location shared with authorities</p>
+                        <p class="text-xs text-gray-500 mt-1">Accuracy: ${Math.round(position.coords.accuracy)} meters</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleLocationError(error) {
+            let message = "Error getting your location: ";
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    message += "You denied the request for geolocation.";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    message += "Location information is unavailable.";
+                    break;
+                case error.TIMEOUT:
+                    message += "The request to get location timed out.";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    message += "An unknown error occurred.";
+                    break;
+            }
+            alert(message);
+        }
+
+        // Test location button
+        document.getElementById('testLocationBtn').addEventListener('click', function() {
+            if(document.getElementById('locationConsent').checked) {
+                alert("Testing location services...");
+                getLocation();
+            } else {
+                alert("Please enable location sharing first");
+            }
+        });
+
+        // Emergency contact cards
+        document.querySelectorAll('.emergency-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const service = this.querySelector('h3').textContent;
+                const number = this.querySelector('p').textContent;
+                alert(`Calling ${service} at ${number}`);
+                // In a real app, this would initiate a phone call
+            });
+        });
+    </script>
+</body>
+</html>
